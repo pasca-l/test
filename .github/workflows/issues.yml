@@ -1,0 +1,60 @@
+name: add issues to project from user account
+on:
+  workflow_dispatch:
+  issues:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  add_item:
+    runs-on: ubuntu-latest
+
+    env:
+      ORGANIZATION: DAYO-NE
+      PROJECT_NUMBER: 2
+
+    steps:
+      - name: fetch project data
+        id: fetch_project_data
+        uses: octokit/graphql-action@v2.x
+        with:
+          query: |
+            query ($org: String!, $number: Int!) {
+              organization(login: $org) {
+                projectV2(number: $number) {
+                  id
+                  fields(first:1) {
+                    nodes {
+                      ... on ProjectV2Field {
+                        id
+                        name
+                      }
+                      ... on ProjectV2SingleSelectField {
+                        id
+                        name
+                        options {
+                          id
+                          name
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          variables: |
+            org: ${{ env.ORGANIZATION }}
+            number: ${{ env.PROJECT_NUMBER }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
+
+      - name: set environment variable from project data
+        run: |
+          echo "${{ steps.fetch_project_data.outputs.data }}"
+          echo "${{ steps.fetch_project_data.outputs.data }}" > project.json
+          echo "PROJECT_ID=$(jq '.data.organization.projectV2.id' project.json)" >> $GITHUB_ENV
+
+      - name: check environment variable
+        run: |
+          echo "PROJECT_ID is ${{ env.PROJECT_ID }}."
