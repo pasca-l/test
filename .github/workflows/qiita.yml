@@ -1,0 +1,28 @@
+name: publish article to qiita repository
+on:
+  workflow_dispatch:
+    inputs:
+      file_name:
+        required: true
+        description: "enter filename (eg. 20000101.md -> 20000101)"
+
+jobs:
+  publish_article:
+    runs-on: ubuntu-latest
+    env:
+      API_TOKEN: 6a816fd43cf684bd02562c69f41bdc7389bdf63e
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+
+      - name: set up golang
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.22
+
+      - name: run go script
+        run: go run main.go
+      # - name: request authentication
+      #   run: |
+      #     curl 
