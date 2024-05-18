@@ -22,9 +22,7 @@ jobs:
           go-version: '>=1.22'
 
       - name: run go script
-        run: go run main.go -filename $FILENAME
-        env:
-          FILENAME: ${{ github.event.inputs.filename }}
+        run: go run main.go -filename "${{ github.event.inputs.filename }}"
       # - name: request authentication
       #   run: |
       #     curl 
