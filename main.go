@@ -3,5 +3,8 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("Hello World")
+	filename := flag.String("filename", "yyyymmdd")
+	flag.Parse()
+
+	fmt.Println(*filename)
 }
