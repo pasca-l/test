@@ -67,6 +67,7 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
+          git pull
           git add README.md
           git commit -m "Update README with closed issues" || exit 0
           git push
