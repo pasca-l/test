@@ -86,4 +86,4 @@ jobs:
           git pull
           git add README.md
           git commit -m "Update README" || exit 0
-          git push
+          git push -f
