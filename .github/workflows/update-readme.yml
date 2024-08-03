@@ -40,7 +40,7 @@ jobs:
             open_issues.slice(0, 10).forEach(issue => {
               openIssueSection += `- [${issue.title}](${issue.html_url})\n`;
             })
-            let closedIssueSection = '## Close Issues\n';
+            let closedIssueSection = '## Closed Issues\n';
             closed_issues.slice(0, 10).forEach(issue => {
               closedIssueSection += `- [${issue.title}](${issue.html_url})\n`;
             })
