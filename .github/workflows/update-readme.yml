@@ -38,11 +38,11 @@ jobs:
             // Generate markdown for issues
             let openIssueSection = '## Open Issues\n';
             open_issues.slice(0, 10).forEach(issue => {
-              openIssueSection += `- [${issue.title}](${issue.html_url})`;
+              openIssueSection += `- [${issue.title}](${issue.html_url})\n`;
             })
             let closedIssueSection = '## Close Issues\n';
             closed_issues.slice(0, 10).forEach(issue => {
-              closedIssueSection += `- [${issue.title}](${issue.html_url})`;
+              closedIssueSection += `- [${issue.title}](${issue.html_url})\n`;
             })
 
             // Read the current README
