@@ -54,6 +54,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               path: 'README.md',
+              message: 'Update README with open issues',
               content: Buffer.from(readme).toString('base64'),
               sha: (await github.rest.repos.getContent({
                 owner: context.repo.owner,
