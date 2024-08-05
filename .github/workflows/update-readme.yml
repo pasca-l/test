@@ -1,9 +1,10 @@
 name: Update README with Closed Issues
 
 on:
-  issues:
-    types:
-      - closed
+  workflow_dispatch:
+  # issues:
+  #   types:
+  #     - closed
 
 jobs:
   update-readme:
