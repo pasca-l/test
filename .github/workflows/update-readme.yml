@@ -54,12 +54,12 @@ jobs:
             if (openIssueRegex.test(readme)) {
               readme = readme.replace(openIssueRegex, openIssueSection);
             } else {
-              readme += '\n\n' + openIssueSection;
+              readme += '\n' + openIssueSection;
             }
             if (closedIssueRegex.test(readme)) {
               readme = readme.replace(closedIssueRegex, closedIssueSection);
             } else {
-              readme += '\n\n' + closedIssueSection;
+              readme += '\n' + closedIssueSection;
             }
 
             // Write the updated README
