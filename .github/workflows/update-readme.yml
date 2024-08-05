@@ -35,22 +35,22 @@ jobs:
               per_page: 100
             });
 
-            // Generate markdown for issues
-            let openIssueSection = '## Open Issues\n';
-            open_issues.slice(0, 10).forEach(issue => {
+            // Generate markdown sections for issues
+            let openIssueSection = '## On bookshelf\n';
+            open_issues.forEach(issue => {
               openIssueSection += `- [${issue.title}](${issue.html_url})\n`;
             })
-            let closedIssueSection = '## Closed Issues\n';
-            closed_issues.slice(0, 10).forEach(issue => {
+            let closedIssueSection = '## Done reading\n';
+            closed_issues.forEach(issue => {
               closedIssueSection += `- [${issue.title}](${issue.html_url})\n`;
             })
 
             // Read the current README
             let readme = fs.readFileSync('README.md', 'utf8');
 
-            // Check if the issues section already exists
-            const openIssueRegex = /## Open Issues[\s\S]*?(?=\n## |$)/;
-            const closedIssueRegex = /## Closed Issues[\s\S]*?(?=\n## |$)/;
+            // Replace if the section already exists, else append section
+            const openIssueRegex = /## On bookshelf[\s\S]*?(?=\n## |$)/;
+            const closedIssueRegex = /## Done reading[\s\S]*?(?=\n## |$)/;
             if (openIssueRegex.test(readme)) {
               readme = readme.replace(openIssueRegex, openIssueSection);
             } else {
@@ -70,7 +70,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               path: 'README.md',
-              message: 'Update README with open and closed issue sections',
+              message: 'Updated README with open and closed issue sections',
               content: Buffer.from(readme).toString('base64'),
               sha: (await github.rest.repos.getContent({
                 owner: context.repo.owner,
