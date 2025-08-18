@@ -29,10 +29,9 @@ jobs:
           node-version: 20
       - name: Install dependencies
         working-directory: ./test-react-native-app
-        run: npm install
-      - name: Build web app
-        working-directory: ./test-react-native-app
-        run: npm run build:web
+        run: | 
+          npm install
+          npm run build:web
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
