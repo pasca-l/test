@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         working-directory: ./test-react-native-app
         env:
-          EXPO_BASE_URL: ${{ env.REPO_NAME }}
+          EXPO_BASE_URL: /test
         run: |
           npm install
           npm run build:web
