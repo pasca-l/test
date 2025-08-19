@@ -17,6 +17,9 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  REPO_NAME: ${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,7 +34,7 @@ jobs:
         working-directory: ./test-react-native-app
         run: | 
           npm install
-          npm run build:web
+          EXPO_BASE_URL=${{ env.REPO_NAME }} npm run build:web
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
