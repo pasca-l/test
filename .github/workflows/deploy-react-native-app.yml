@@ -32,9 +32,11 @@ jobs:
           node-version: 20
       - name: Install dependencies
         working-directory: ./test-react-native-app
-        run: | 
+        env:
+          EXPO_BASE_URL: ${{ env.REPO_NAME }}
+        run: |
           npm install
-          EXPO_BASE_URL=${{ env.REPO_NAME }} npm run build:web
+          npm run build:web
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

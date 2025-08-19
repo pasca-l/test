@@ -1,8 +1,6 @@
 import { ExpoConfig, ConfigContext } from "expo/config";
 
 export default ({ config }: ConfigContext): ExpoConfig => {
-  console.log("EXPO_BASE_URL:", process.env.EXPO_BASE_URL);
-
   return {
     ...config,
     name: "test-react-native-app",
@@ -42,7 +40,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ],
     experiments: {
       typedRoutes: true,
-      baseUrl: process.env.EXPO_BASE_URL || "/test",
+      baseUrl: process.env.EXPO_BASE_URL || "/",
     },
   };
 };
