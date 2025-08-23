@@ -18,6 +18,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
+  APP_ROUTE: ./test-household-mobile-app/expo_app
   REPO_NAME: ${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
 
 jobs:
@@ -31,7 +32,7 @@ jobs:
         with:
           node-version: 20
       - name: Install dependencies
-        working-directory: ./test-react-native-app
+        working-directory: ${{ env.APP_ROUTE }}
         env:
           EXPO_BASE_URL: /test
         run: |
@@ -42,7 +43,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './test-react-native-app/dist'
+          path: ${{ env.APP_ROUTE }}/dist
 
   deploy:
     environment:
