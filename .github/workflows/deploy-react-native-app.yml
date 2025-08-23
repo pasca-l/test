@@ -19,7 +19,6 @@ concurrency:
 
 env:
   APP_ROUTE: ./test-react-native-app
-  REPO_NAME: ${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
 
 jobs:
   build:
@@ -34,7 +33,7 @@ jobs:
       - name: Install dependencies
         working-directory: ${{ env.APP_ROUTE }}
         env:
-          EXPO_BASE_URL: /${{ env.REPO_NAME }}
+          EXPO_BASE_URL: /${{ github.event.repository.name }}
         run: |
           npm install
           npm run build:web
