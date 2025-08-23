@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies
         working-directory: ${{ env.APP_ROUTE }}
         env:
-          EXPO_BASE_URL: /test
+          EXPO_BASE_URL: /${{ env.REPO_NAME }}
         run: |
           npm install
           npm run build:web
