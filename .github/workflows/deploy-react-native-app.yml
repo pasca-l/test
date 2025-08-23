@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  APP_ROUTE: ./test-household-mobile-app/expo_app
+  APP_ROUTE: ./test-react-native-app
   REPO_NAME: ${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
 
 jobs:
