@@ -82,3 +82,31 @@ jobs:
           git push origin "$NEW_TAG"
 
           echo "Created and pushed tag: $NEW_TAG"
+
+      - name: generate changelog
+        id: changelog
+        run: |
+          LATEST_TAG="${{ steps.get_latest_tag.outputs.latest_tag }}"
+          NEW_TAG="${{ steps.calc_version.outputs.new_tag }}"
+
+          # Generate changelog from commits since last tag
+          if [ "$LATEST_TAG" = "v0.0.0" ]; then
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges)
+          else
+            CHANGELOG=$(git log ${LATEST_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges)
+          fi
+
+          # Save to file to handle multiline
+          echo "$CHANGELOG" > changelog.txt
+          echo "Generated changelog between $LATEST_TAG and HEAD"
+
+      - name: create github release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.calc_version.outputs.new_tag }}
+          release_name: Release ${{ steps.calc_version.outputs.new_tag }}
+          body_path: changelog.txt
+          draft: false
+          prerelease: false
