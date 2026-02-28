@@ -1,5 +1,5 @@
 resource "google_compute_instance" "free_vm" {
-  name         = "learning-terraform-vm"
+  name         = "learning-terraform-vm-test"
   machine_type = "e2-micro"
   zone         = "us-central1-a"
 
