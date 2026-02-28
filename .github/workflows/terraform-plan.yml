@@ -1,0 +1,64 @@
+name: terraform-plan
+
+on:
+  pull_request:
+    paths:
+      - 'gcp/**'
+
+# https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#permissions
+permissions:
+  contents: 'read'
+  pull-requests: 'write'
+
+# ensure only the latest run is executed
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tf-plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+        working-directory: gcp
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9
+      - run: terraform fmt
+        continue-on-error: true
+
+      - run: terraform init
+      - id: plan
+        run: terraform plan -no-color
+
+      - uses: actions/github-script@v7
+        if: steps.plan.outcome == 'success'
+        env:
+          PLAN_RESULT: ${{ steps.plan.outputs.stdout }}
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `:white_check_mark: terraform plan succeeded :white_check_mark:\n\`\`\`terraform\n${process.env.PLAN_RESULT}\n\`\`\``
+            })
+
+      - uses: actions/github-script@v7
+        if: steps.plan.outcome == 'failure'
+        env:
+          PLAN_ERROR: ${{ steps.plan.outputs.stderr }}
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `:warning: error occured in terraform plan :warning:\n\`\`\`${process.env.PLAN_ERROR}\`\`\``
+            })
