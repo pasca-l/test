@@ -8,6 +8,7 @@ on:
 # https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#permissions
 permissions:
   contents: 'read'
+  id-token: 'write'
   pull-requests: 'write'
 
 # ensure only the latest run is executed
@@ -26,6 +27,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - uses: google-github-actions/auth@v3
+        with:
+          service_account: terraform-sa@terraform-488710.iam.gserviceaccount.com
+          workload_identity_provider: projects/444321238192/locations/global/workloadIdentityPools/terraform-identity-pool/providers/terraform-provider
 
       - uses: hashicorp/setup-terraform@v3
         with:
